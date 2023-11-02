@@ -61,11 +61,28 @@ const allDaysBetween = (startDate, endDate) => {
     .map((_, index) => new Date(startDateMs + (index + 1) * oneDayMs));
 };
 
+const incremententDay = (startDate, endDate, reducer, initValue) => {
+  const startDateMs = Number(startDate);
+  const endDateMs = Number(endDate);
+
+  let curr = startDateMs + oneDayMs;
+  let acc = initValue;
+
+  while (curr < endDateMs) {
+    acc = reducer(acc, new Date(curr));
+    curr += oneDayMs;
+  }
+
+  return acc;
+}
+
 const cases = [
   {start: '7 October 2013', end: '9 October 2013', expected: 1},
   {start: '5 October 2013', end: '14 October 2013', expected: 5},
   {start: '7 October 2013', end: '1 January 2014',  expected:61},
   {start: '7 October 2013', end: '5 October 2013', expected: 0},
+  {start: '7 October 2013', end: '5 October 2033', expected: 5216},
+  {start: '7 October 1983', end: '5 October 2073', expected: 5216},
 ]
 
 const run = (target) => cases.map(({start, end, expected}) => {
@@ -93,17 +110,32 @@ WeekdaysBetweenTwoDatesByReducer = (firstDate, secondDate) => {
   }, 0);
 }
 
+WeekdaysBetweenTwoDatesByIncrement = (firstDate, secondDate) => {
+  // date.getDay() returns 0 for Sunday, 1 for Monday, 5 for Friday, 6 for Saturday,
+  return incremententDay(firstDate, secondDate, (count, dayDate) => {
+    // debugger;
+    const dayNum = dayDate.getDay();
+
+    return count + ((dayNum !== 0 && dayNum !== 6) ? 1 : 0);
+  }, 0);
+}
+
 let startTime;
 
 startTime = performance.now();
 console.log(run(WeekdaysBetweenTwoDates ));
-console.log('duration for array v', performance.now() - startTime)
+console.log(startTime, 'duration for array v', performance.now() - startTime)
 
 startTime = performance.now();
 console.log(run(WeekdaysBetweenTwoDatesByReducer ));
-console.log('duration for reducer', performance.now() - startTime)
+console.log(startTime, 'duration for reducer', performance.now() - startTime)
 
-    </script>
+startTime = performance.now();
+console.log(run(WeekdaysBetweenTwoDatesByIncrement ));
+console.log(startTime, 'duration for WeekdaysBetweenTwoDatesByIncrement', performance.now() - startTime)
+
+
+</script>
 
   </body>
 </html>
