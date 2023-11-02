@@ -16,7 +16,13 @@ class PublicHoliday {
     // so we don't have to check these all multiple times
     this.fixed = !mondayIfWeekend && !dayOfWeek && !instanceOfDayOfWeekInMonth;
 
-    // TODO might need a check for if fixed then day and month must be set
+    // if fixed then day and month must be set
+    if (this.fixed && (
+      !day ||
+      (month ?? -1) < 0) // month === 0 is acceptable
+    ) {
+      throw new Error('Invalid public holiday. Month and day must be set if no adjustment rule is specified.')
+    }
   }
   
   getDateForYear(year) {
