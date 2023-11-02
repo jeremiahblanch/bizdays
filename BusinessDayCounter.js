@@ -1,12 +1,8 @@
-import { differenceInBusinessDays } from 'date-fns';
+import allDaysBetween from './allDaysBetween';
 class BusinessDayCounter {
-
-  // the ordinal number of a week day, corresponding to javascript getDay()
-  // 1 is Monday, 5 is Friday
-  weekDays = [1,2,3,4,5];
-
   WeekdaysBetweenTwoDates(firstDate, secondDate) {
-    return differenceInBusinessDays(firstDate, secondDate);
+    // date.getDay() returns 1 for Monday, 5 for Friday, 6 for Saturday, 7 for Sunday etc
+    return allDaysBetween(firstDate, secondDate).reduce((count, dayDate) => count + (dayDate.getDay() <= 5 ? 1 : 0), 0);
   }
   BusinessDaysBetweenTwoDates(
   firstDate,
