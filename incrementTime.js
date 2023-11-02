@@ -1,5 +1,5 @@
 // given a start and end value in milliseconds, startMs, endMs,
-// an amoutn to incremen: deltaMs,
+// an amount to increment: deltaMs,
 // a reducer function,
 // and an intial value: initValue
 // runs through every moment from startMs to endMs, stepping at intervals of deltaMs, and running 
