@@ -1,7 +1,7 @@
 // returns an array of date objects - one object for each day between the given 2 dates, excluding the start and end
 import oneDayMs from './oneDayMs';
 
-export default (startDate, endDate) => {
+const allDaysBetween = (startDate, endDate) => {
   const startDateMs = Number(startDate);
   const endDateMs = Number(endDate);
 
@@ -21,4 +21,6 @@ export default (startDate, endDate) => {
     .fill()
     // because we don't want to include start and end dates, start at index + 1
     .map((_, index) => new Date(startDateMs + (index + 1) * oneDayMs));
-}
+};
+
+export default allDaysBetween;
