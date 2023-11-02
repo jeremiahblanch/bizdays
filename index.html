@@ -13,6 +13,7 @@
     
     <script >
 const oneDayMs = 24 * 60 * 60 * 1000;
+const makeMidnight = (d) => d.setHours(0,0,0,0);
 
 const reduceByDay = (startDate, endDate, reducer, initValue) => {
   const startDateMs = Number(startDate);
@@ -76,20 +77,8 @@ const incremententDay = (startDate, endDate, reducer, initValue) => {
   return acc;
 }
 
-const cases = [
-  {start: '7 October 2013', end: '9 October 2013', expected: 1},
-  {start: '5 October 2013', end: '14 October 2013', expected: 5},
-  {start: '7 October 2013', end: '1 January 2014',  expected:61},
-  {start: '7 October 2013', end: '5 October 2013', expected: 0},
-  {start: '7 October 2013', end: '5 October 2033', expected: 5216},
-  {start: '7 October 1983', end: '5 October 2073', expected: 5216},
-]
 
-const run = (target) => cases.map(({start, end, expected}) => {
-  const result = target(new Date(start), new Date(end));
-  
-  return { result, expected, pass: result === expected};
-});
+
 
 WeekdaysBetweenTwoDates = (firstDate, secondDate) => {
     // date.getDay() returns 0 for Sunday, 1 for Monday, 5 for Friday, 6 for Saturday,
@@ -120,19 +109,77 @@ WeekdaysBetweenTwoDatesByIncrement = (firstDate, secondDate) => {
   }, 0);
 }
 
+
+BusinessDaysBetweenTwoDatesByIncrement = (firstDate, secondDate, publicHolidays = []) => {
+
+  const firstDateMidnight = makeMidnight(firstDate);
+  const secondDateMidnight = makeMidnight(secondDate);
+
+  const publicHolidayMidnights = publicHolidays.map(makeMidnight);
+
+  return incremententDay(firstDateMidnight, secondDateMidnight, (count, dayDate) => {
+  
+    if (publicHolidayMidnights.includes(Number(dayDate))) {
+      return count;
+    }
+
+    const dayNum = dayDate.getDay();
+
+    if (dayNum === 0 || dayNum === 6) {
+      return count;
+    }
+
+
+    return count + ((dayNum !== 0 && dayNum !== 6) ? 1 : 0);
+  }, 0);
+}
+
+
+const casesOne = [
+  {start: '7 October 2013', end: '9 October 2013', expected: 1},
+  {start: '5 October 2013', end: '14 October 2013', expected: 5},
+  {start: '7 October 2013', end: '1 January 2014',  expected:61},
+  {start: '7 October 2013', end: '5 October 2013', expected: 0},
+  {start: '7 October 2013', end: '5 October 2033', expected: 5216},
+  {start: '7 October 1983', end: '5 October 2073', expected: 5216},
+];
+
+const publicHolidays = [
+  '25 December 2013', '26 December 2013', '1 January 2014',
+];
+
+const casesTwo = [
+  {start: '7 October 2013', end: '9 October 2013', publicHolidays, expected: 1},
+  {start: '24 December 2013', end: '27 December 2013', publicHolidays, expected: 0},
+  {start: '7 October 2013', end: '1 January 2014', publicHolidays, expected: 59},
+
+];
+
+
+const run = (fn, cases) => cases.map(({start, end, publicHolidays, expected}) => {
+  const result = fn(new Date(start), new Date(end), (publicHolidays ?? []).map(p => new Date(p)));
+  
+  return { result, expected, pass: result === expected};
+});
+
 let startTime;
 
 startTime = performance.now();
-console.log(run(WeekdaysBetweenTwoDates ));
+console.log(run(WeekdaysBetweenTwoDates, casesOne ));
 console.log(startTime, 'duration for array v', performance.now() - startTime)
 
 startTime = performance.now();
-console.log(run(WeekdaysBetweenTwoDatesByReducer ));
+console.log(run(WeekdaysBetweenTwoDatesByReducer, casesOne ));
 console.log(startTime, 'duration for reducer', performance.now() - startTime)
 
 startTime = performance.now();
-console.log(run(WeekdaysBetweenTwoDatesByIncrement ));
+console.log(run(WeekdaysBetweenTwoDatesByIncrement, casesOne ));
 console.log(startTime, 'duration for WeekdaysBetweenTwoDatesByIncrement', performance.now() - startTime)
+
+
+startTime = performance.now();
+console.log(run(BusinessDaysBetweenTwoDatesByIncrement, casesTwo ));
+console.log(startTime, 'duration for BusinessDaysBetweenTwoDatesByIncrement', performance.now() - startTime)
 
 
 </script>
