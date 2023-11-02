@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+  </head>
+  <body>
+    
+    <script >
+const oneDayMs = 24 * 60 * 60 * 1000;
+
+const reduceByDay = (startDate, endDate, reducer, initValue) => {
+  const startDateMs = Number(startDate);
+  const endDateMs = Number(endDate);
+
+  debugger;
+  let arr = [];
+  // if dates are less than one day apart
+  // or end is before start
+  if ((startDateMs + oneDayMs) < endDateMs) {
+    arr = Array(
+      // difference in milliseconds divided by milliseconds in a day gets difference in days
+      // use ceil to handle fractions of days: always round up, then deduct 1 to ignore start date
+      Math.ceil((endDateMs - startDateMs) / oneDayMs) - 1
+      )
+      .fill();
+  }
+
+  return arr.reduce((acc, curr, index) => {
+    return reducer(acc, (
+      new Date(startDateMs + (index + 1) * oneDayMs)
+    ));
+  }, initValue);
+}
+
+
+
+const cases = [
+  {start: '7 October 2013', end: '9 October 2013', expected: 1},
+  {start: '5 October 2013', end: '14 October 2013', expected: 5},
+  {start: '7 October 2013', end: '1 January 2014',  expected:61},
+  {start: '7 October 2013', end: '5 October 2013', expected: 0},
+]
+
+const run = (target) => cases.map(({start, end, expected}) => {
+  const result = target(new Date(start), new Date(end));
+  
+  return { result, expected, pass: result === expected};
+});
+
+
+WeekdaysBetweenTwoDatesByReducer = (firstDate, secondDate) => {
+  // date.getDay() returns 0 for Sunday, 1 for Monday, 5 for Friday, 6 for Saturday,
+  return reduceByDay(firstDate, secondDate, (count, dayDate) => {
+    debugger;
+    const dayNum = dayDate.getDay();
+
+    return count + ((dayNum !== 0 && dayNum !== 6) ? 1 : 0);
+  }, 0);
+}
+
+const result = run(WeekdaysBetweenTwoDatesByReducer );
+console.log(result);
+
+    </script>
+
+  </body>
+</html>

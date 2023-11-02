@@ -8,6 +8,8 @@ class BusinessDayCounter {
       return count + ((dayNum !== 0 && dayNum !== 6) ? 1 : 0);
     }, 0);
   }
+
+  
   BusinessDaysBetweenTwoDates(
   firstDate,
   secondDate,
