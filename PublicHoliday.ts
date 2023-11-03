@@ -53,3 +53,5 @@ class PublicHoliday {
     return dates;
   }
 }
+
+export default PublicHoliday;

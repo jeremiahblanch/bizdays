@@ -2,7 +2,7 @@ import incrementTime from './incrementTime';
 import isWeekend from './isWeekend';
 import makeMidnightMs from './makeMidnightMs';
 import oneDayMs from './oneDayMs';
-
+import PublicHoliday from './PublicHoliday';
 class BusinessDayCounter {
 
   private countWeekdaysBetween(start: Date, end: Date, exclusions: Date[] = []) {
@@ -34,23 +34,17 @@ class BusinessDayCounter {
     return this.countWeekdaysBetween(firstDate, secondDate);
   }
   
-  BusinessDaysBetweenTwoDates_Simple(
-  firstDate: Date,
-  secondDate: Date,
-  publicHolidays: Date[],
-  ) {
-    return this.countWeekdaysBetween(firstDate, secondDate, publicHolidays);
-  }
-  
-  BusinessDaysBetweenTwoDates_Complex(
+  BusinessDaysBetweenTwoDates(
     firstDate: Date,
     secondDate: Date,
-    publicHolidays: PublicHoliday[],
+    publicHolidays: (Date | PublicHoliday)[],
   ) {
-      // we have to work out the year of each of these
-      // is each holiday within the time period given and then work out the year
+      // publicHolidays could be an array of dates or an array of PublicHoliday objects
+      // If it is publicHoliday objects, we have use them to work out what the date(s) would be.
+      // Note: the publicHoliday may not happen between the given dates, or it could happen multiple times
       const publicHolidayDates = publicHolidays
-        .map(ph => ph.getDatesBetween(firstDate, secondDate))
+        .map((ph) => ph instanceof PublicHoliday ? ph.getDatesBetween(firstDate, secondDate) : ph)
+        // ph.getDatesBetween will return an array, so we need to flatten
         .flat();
   
       return this.countWeekdaysBetween(firstDate, secondDate, publicHolidayDates);
