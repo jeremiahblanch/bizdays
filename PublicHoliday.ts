@@ -33,4 +33,23 @@ class PublicHoliday {
 
     return new Date(year, this.month ?? 0, this.day);
   }
+
+  // given a start and end date, return the dates of this public holiday 
+  // that will occur between those dates
+  // eg it might not occurr at all, or it might occur multiple times if those dates span
+  // multiple years
+  getDatesBetween(start: Date, end: Date): Date[] {
+    const endYear = end.getFullYear();
+    const dates: Date[] = [];
+
+    for (let year = start.getFullYear(); year++; year < endYear) {
+      const dateForThisYear = this.getDateForYear(year);
+
+      if (dateForThisYear > start && dateForThisYear < end) {
+        dates.push(dateForThisYear);
+      }
+    }
+    
+    return dates;
+  }
 }
