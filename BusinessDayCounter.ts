@@ -5,14 +5,20 @@ import oneDayMs from './oneDayMs';
 
 class BusinessDayCounter {
 
-  private countWeekdaysBetween(startMs: number, endMs: number, exclusions: number[] = []) {
+  private countWeekdaysBetween(start: Date, end: Date, exclusions: Date[] = []) {
+    if (start >= end) {
+      return 0;
+    }
+  
+    const exclusionsMs = exclusions.map(makeMidnightMs);
+    
     return incrementTime(
-      startMs,
-      endMs,
+      makeMidnightMs(start),
+      makeMidnightMs(end),
       oneDayMs,
       (count, currMs) => {
         const date = new Date(currMs);
-        if (isWeekend(date) || exclusions.includes(currMs)) {
+        if (isWeekend(date) || exclusionsMs.includes(currMs)) {
           return count;
         }
         
@@ -21,9 +27,7 @@ class BusinessDayCounter {
   }
 
   WeekdaysBetweenTwoDates(firstDate: Date, secondDate: Date) {
-    return this.countWeekdaysBetween(
-      makeMidnightMs(firstDate),
-      makeMidnightMs(secondDate));
+    return this.countWeekdaysBetween(firstDate, secondDate);
   }
   
   BusinessDaysBetweenTwoDates_Simple(
@@ -31,28 +35,21 @@ class BusinessDayCounter {
   secondDate: Date,
   publicHolidays: [Date],
   ) {
-    return this.countWeekdaysBetween(
-      makeMidnightMs(firstDate),
-      makeMidnightMs(secondDate),
-      publicHolidays.map(makeMidnightMs));
+    return this.countWeekdaysBetween(firstDate, secondDate, publicHolidays);
   }
   
   BusinessDaysBetweenTwoDates_Complex(
     firstDate: Date,
     secondDate: Date,
     publicHolidays: [PublicHoliday],
-    ) {
+  ) {
       // we have to work out the year of each of these
       // is each holiday within the time period given and then work out the year
-      const publicHolidayMidnights = publicHolidays
+      const publicHolidayDates = publicHolidays
         .map(ph => ph.getDatesBetween(firstDate, secondDate))
-        .flat()
-        .map(makeMidnightMs);
+        .flat();
   
-      return this.countWeekdaysBetween(
-          makeMidnightMs(firstDate),
-          makeMidnightMs(secondDate),
-          publicHolidayMidnights);
+      return this.countWeekdaysBetween(firstDate, secondDate, publicHolidayDates);
     }
   }
   
