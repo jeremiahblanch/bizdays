@@ -1,11 +1,15 @@
+import { IPublicHolidayAdjustmentRule } from './PublicHolidayAdjustmentRules';
+
 type PublicHolidayArgs = {
   adjustmentRule?: IPublicHolidayAdjustmentRule,
   day?: number,
   month?: number,
+  name: string,
 }
 
 class PublicHoliday {
   constructor({
+    name,
     day,
     month,
     adjustmentRule,
@@ -17,6 +21,7 @@ class PublicHoliday {
       throw new Error('Invalid public holiday. Month and day must be set if no adjustment rule is specified.')
     }
     
+    this.name = name;
     this.day = day;
     this.month = month; // January is 0
     this.adjustmentRule = adjustmentRule;
@@ -25,6 +30,7 @@ class PublicHoliday {
   adjustmentRule?: IPublicHolidayAdjustmentRule
   day?: number
   month?: number
+  name: string
   
   getDateForYear(year: number): Date {
     if (this.adjustmentRule) {  
@@ -42,7 +48,7 @@ class PublicHoliday {
     const endYear = end.getFullYear();
     const dates: Date[] = [];
 
-    for (let year = start.getFullYear(); year++; year < endYear) {
+    for (let year = start.getFullYear() - 1; year++ <= endYear;) { // faster for loop with increment within the conditional
       const dateForThisYear = this.getDateForYear(year);
 
       if (dateForThisYear > start && dateForThisYear < end) {
@@ -51,6 +57,10 @@ class PublicHoliday {
     }
     
     return dates;
+  }
+
+  toString() {
+    return this.name;
   }
 }
 

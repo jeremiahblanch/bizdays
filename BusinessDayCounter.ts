@@ -4,7 +4,6 @@ import makeMidnightMs from './makeMidnightMs';
 import oneDayMs from './oneDayMs';
 import PublicHoliday from './PublicHoliday';
 class BusinessDayCounter {
-
   private countWeekdaysBetween(start: Date, end: Date, exclusions: Date[] = []) {
     if (start >= end) {
       return 0;

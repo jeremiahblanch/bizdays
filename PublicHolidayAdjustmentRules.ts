@@ -1,4 +1,4 @@
-interface IPublicHolidayAdjustmentRule {
+export interface IPublicHolidayAdjustmentRule {
   adjustForYear(year: number): Date
 }
 
@@ -7,7 +7,7 @@ type NextMondayIfWeekendParams = {
   month: number,
 }
 
-class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
+export class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
   constructor({ day, month, }: NextMondayIfWeekendParams) {
     this.day = day;
     this.month = month; // January is 0
@@ -40,7 +40,7 @@ type NthDayOfTheMonthParams = {
   ordinal: number, // 1 is for first, 2 is 2nd etc
 }
 
-class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
+export class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
   constructor({ dayOfWeek, month, ordinal }: NthDayOfTheMonthParams ) {
     this.dayOfWeek = dayOfWeek;
     this.month = month;
@@ -60,6 +60,7 @@ class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
       (dayOfWeek !== this.dayOfWeek) || (count < this.ordinal)
     ) {
       let offset = this.dayOfWeek - dayOfWeek;
+
       if (offset <= 0) {
         offset = 7 + offset;
       }
@@ -71,3 +72,4 @@ class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
     return workingDate;
   }
 }
+
