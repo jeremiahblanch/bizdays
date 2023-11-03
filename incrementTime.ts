@@ -1,6 +1,6 @@
-export type IncrementTimeReducer = (acc: any, curr: number) => any;
+type IncrementTimeReducer = (acc: any, curr: number) => any;
 
-// given a start and end value in milliseconds, startMs, endMs,
+// given start and end value in milliseconds, startMs, endMs,
 // an amount to increment: deltaMs,
 // a reducer function,
 // and an intial value: initValue

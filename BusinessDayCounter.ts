@@ -10,15 +10,19 @@ class BusinessDayCounter {
       return 0;
     }
   
-    const exclusionsMs = exclusions.map(makeMidnightMs);
+    // To make things easier, we will deal with all dates internally as numeric values of milliseconds, at midnight on that day.
+    // the function makeMidnightMs takes a date and returns a number which is the number of milliseconds since the unix epoch
+    // upto midnight on that date
+  
+    const exclusionsMs = exclusions.map(makeMidnightMs); // the excluded dates as millisecond values
     
     return incrementTime(
-      makeMidnightMs(start),
-      makeMidnightMs(end),
-      oneDayMs,
-      (count, currMs) => {
-        const date = new Date(currMs);
-        if (isWeekend(date) || exclusionsMs.includes(currMs)) {
+      makeMidnightMs(start), // the start date as milliseconds
+      makeMidnightMs(end), // the end date as milliseconds
+      oneDayMs, // interval to increment - one day (24 hours) in milliseconds
+      (count, currentMomentMs) => { // reducer function to run for each currentMomentMs
+        const date = new Date(currentMomentMs);
+        if (isWeekend(date) || exclusionsMs.includes(currentMomentMs)) {
           return count;
         }
         
