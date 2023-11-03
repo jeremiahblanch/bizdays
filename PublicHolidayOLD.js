@@ -1,4 +1,4 @@
-class PublicHoliday {
+class PublicHolidayOLD {
 
   constructor({
     day,

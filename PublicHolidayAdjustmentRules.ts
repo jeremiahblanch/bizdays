@@ -2,14 +2,15 @@ interface IPublicHolidayAdjustmentRule {
   adjustForYear(year: number): Date
 }
 
+type NextMondayIfWeekendParams = {
+  day: number,
+  month: number,
+}
+
 class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
-  constructor(
-    day: number,
-    month: number,
-    
-  ) {
-      this.day = day;
-      this.month = month; // January is 0
+  constructor({ day, month, }: NextMondayIfWeekendParams) {
+    this.day = day;
+    this.month = month; // January is 0
   }
 
   day: number = 0
@@ -18,10 +19,8 @@ class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
   adjustForYear(year: number) {
     const workingDate = new Date(0);
 
-    workingDate.setFullYear(year);
-    workingDate.setMonth(this.month);
-    workingDate.setDate(this.day);
-  
+    workingDate.setFullYear(year, this.month, this.day);
+    
     let dayOfWeek =  workingDate.getDay();
     
     if (dayOfWeek === 0) { // Sunday
@@ -35,15 +34,17 @@ class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
   }
 }
 
+type NthDayOfTheMonthParams = {
+  dayOfWeek: number, // Sunday is 0, Monday is 1, Saturday is 6
+  month: number, // January is 0
+  ordinal: number, // 1 is for first, 2 is 2nd etc
+}
+
 class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
-  constructor(
-    dayOfWeek: number, // Sunday is 0, Monday is 1, Saturday is 6
-    month: number,
-    ordinal: number, // 1 is for first, 2 is 2nd etc
-  ) {
-      this.dayOfWeek = dayOfWeek;
-      this.month = month; // January is 0
-      this.ordinal = ordinal;
+  constructor({ dayOfWeek, month, ordinal }: NthDayOfTheMonthParams ) {
+    this.dayOfWeek = dayOfWeek;
+    this.month = month;
+    this.ordinal = ordinal;
   }
 
   dayOfWeek: number = 0
@@ -51,12 +52,7 @@ class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
   ordinal: number = 0
 
   adjustForYear(year: number) {
-    const workingDate = new Date(0);
-
-    workingDate.setFullYear(year);
-    workingDate.setMonth(this.month);
-    workingDate.setDate(1); // start at first day of the month
-    
+    const workingDate = new Date(year, this.month, 1); // start at first day of the month
     let dayOfWeek =  workingDate.getDay();
     let count = 0;
 
