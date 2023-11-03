@@ -37,7 +37,7 @@ class BusinessDayCounter {
   BusinessDaysBetweenTwoDates_Simple(
   firstDate: Date,
   secondDate: Date,
-  publicHolidays: [Date],
+  publicHolidays: Date[],
   ) {
     return this.countWeekdaysBetween(firstDate, secondDate, publicHolidays);
   }
@@ -45,7 +45,7 @@ class BusinessDayCounter {
   BusinessDaysBetweenTwoDates_Complex(
     firstDate: Date,
     secondDate: Date,
-    publicHolidays: [PublicHoliday],
+    publicHolidays: PublicHoliday[],
   ) {
       // we have to work out the year of each of these
       // is each holiday within the time period given and then work out the year
