@@ -2,6 +2,9 @@
 //runs that reducer for each day between startDate and endDate excluding the start and end
 import oneDayMs from './oneDayMs';
 
+
+// tODO take increment value as a param
+// deal only in ms
 const incremententDay = (startDate, endDate, reducer, initValue) => {
   const startDateMs = Number(startDate);
   const endDateMs = Number(endDate);
