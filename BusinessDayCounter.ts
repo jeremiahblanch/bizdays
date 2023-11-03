@@ -56,4 +56,6 @@ class BusinessDayCounter {
       return this.countWeekdaysBetween(firstDate, secondDate, publicHolidayDates);
     }
   }
+
+  export default BusinessDayCounter;
   
