@@ -9,10 +9,10 @@ type PublicHolidayArgs = {
 
 class PublicHoliday {
   constructor({
-    name,
+    adjustmentRule,
     day,
     month,
-    adjustmentRule,
+    name,
   }: PublicHolidayArgs) {
     if (!adjustmentRule && (
       !day ||

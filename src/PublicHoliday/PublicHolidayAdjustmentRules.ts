@@ -53,7 +53,7 @@ export class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
 
   adjustForYear(year: number) {
     const workingDate = new Date(year, this.month, 1); // start at first day of the month
-    let dayOfWeek =  workingDate.getDay();
+    let dayOfWeek = workingDate.getDay();
     let count = 0;
 
     while (

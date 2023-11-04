@@ -1,8 +1,7 @@
 {
   "name": "typescript_dates_challenge",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "BusinessDayCounter class to count business days between given dates, with optional public holidays",
   "scripts": {
     "init": "npx ts-jest config:init",
     "test": "jest"

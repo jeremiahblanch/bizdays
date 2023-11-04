@@ -1,5 +1,5 @@
-import PublicHoliday from './PublicHoliday';
-import { NextMondayIfWeekend, NthDayOfTheMonth } from './PublicHolidayAdjustmentRules';
+import PublicHoliday from '../PublicHoliday/PublicHoliday.class';
+import { NextMondayIfWeekend, NthDayOfTheMonth } from '../PublicHoliday/PublicHolidayAdjustmentRules';
 
 const newYearsDay: PublicHoliday = new PublicHoliday({
   name: 'New Years\' Day',

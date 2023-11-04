@@ -1,8 +1,9 @@
-import incrementTime from './incrementTime';
-import isWeekend from './isWeekend';
-import makeMidnightMs from './makeMidnightMs';
-import oneDayMs from './oneDayMs';
-import PublicHoliday from './PublicHoliday';
+import incrementTime from '../utils/incrementTime';
+import isWeekend from '../utils/isWeekend';
+import makeMidnightMs from '../utils/makeMidnightMs';
+import oneDayMs from '../constants/oneDayMs';
+import PublicHoliday from '../PublicHoliday/PublicHoliday.class';
+
 class BusinessDayCounter {
   private countWeekdaysBetween(start: Date, end: Date, exclusions: Date[] = []) {
     if (start >= end) {
@@ -10,7 +11,7 @@ class BusinessDayCounter {
     }
   
     // To make things easier, we will deal with all dates internally as numeric values of milliseconds, at midnight on that day.
-    // the function makeMidnightMs takes a date and returns a number which is the number of milliseconds since the unix epoch
+    // The function makeMidnightMs takes a date and returns a number which is the number of milliseconds since the unix epoch
     // upto midnight on that date
   
     const exclusionsMs = exclusions.map(makeMidnightMs); // the excluded dates as millisecond values
