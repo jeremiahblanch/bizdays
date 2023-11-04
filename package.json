@@ -8,9 +8,6 @@
   },
   "author": "Jeremiah Blanch",
   "license": "ISC",
-  "dependencies": {
-    "date-fns": "^2.30.0"
-  },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "jest": "^29.7.0",
