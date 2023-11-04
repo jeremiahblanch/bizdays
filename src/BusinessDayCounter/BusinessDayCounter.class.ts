@@ -5,6 +5,14 @@ import oneDayMs from '../constants/oneDayMs';
 import PublicHoliday from '../PublicHoliday/PublicHoliday.class';
 
 class BusinessDayCounter {
+
+  /**
+   * Count the Weekdays between the given start and end dates, but exclude any dates within the optional array exclusions
+   * @param {Date} start - the start date
+   * @param {Date} end - the end date
+   * @param {Date[]} exclusions - dates to exclude from the count
+   * @return {number}
+   */
   private countWeekdaysBetween(start: Date, end: Date, exclusions: Date[] = []) {
     if (start >= end) {
       return 0;
@@ -28,12 +36,33 @@ class BusinessDayCounter {
         
         return count + 1;
     }, 0);
+
+    /* 
+      Instead of incrementTime, we could also use the third party library date-fns (https://date-fns.org/)
+      In that case we would do something like this
+      return dateFns.differenceInBusinessDays(end, start) - [...exclusions, start].filter(d => !dateFns.isWeekend(d) && dateFns.isWithinInterval(d, { start, end })).length;
+    */
   }
 
+
+  /**
+   * Counts the number of non-weekend days between the two given dates, excluding the edge dates.
+   * @param {Date} firstDate - the start date of the period
+   * @param {Date} secondDate - the end date of the period
+   * @return {number}
+   */
   WeekdaysBetweenTwoDates(firstDate: Date, secondDate: Date) {
     return this.countWeekdaysBetween(firstDate, secondDate);
   }
   
+  /**
+   * Counts the number of business days between the two given dates, excluding the edge dates, and
+   * taking into consideration the supplied array of public holidays
+   * @param {Date} firstDate - the start date of the period
+   * @param {Date} secondDate - the end date of the period
+   * @param {(Date | PublicHoliday)[]} publicHolidays - an array of either Dates or instances of the class PublicHoliday 
+   * @return {number}
+   */
   BusinessDaysBetweenTwoDates(
     firstDate: Date,
     secondDate: Date,

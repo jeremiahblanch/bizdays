@@ -7,6 +7,9 @@ type NextMondayIfWeekendParams = {
   month: number,
 }
 
+/**
+ * A class for Public Holidays that will move to the following Monday if they occur on a weekend.
+ */
 export class NextMondayIfWeekend implements IPublicHolidayAdjustmentRule {
   constructor({ day, month, }: NextMondayIfWeekendParams) {
     this.day = day;
@@ -40,6 +43,10 @@ type NthDayOfTheMonthParams = {
   ordinal: number, // 1 is for first, 2 is 2nd etc
 }
 
+/**
+ * A class for Public Holidays that occur on the Nth day of a particular month each year,
+ * eg Queen's Birthday on the 2nd Monday of June.
+ */
 export class NthDayOfTheMonth implements IPublicHolidayAdjustmentRule {
   constructor({ dayOfWeek, month, ordinal }: NthDayOfTheMonthParams ) {
     this.dayOfWeek = dayOfWeek;

@@ -7,6 +7,10 @@ type PublicHolidayArgs = {
   name: string,
 }
 
+/**
+ * A class for defining a Public Holiday that can have either a fixed day and month, or an adjustmentRule for 
+ * deriving what its date will be on different years
+ */
 class PublicHoliday {
   constructor({
     adjustmentRule,
@@ -32,6 +36,11 @@ class PublicHoliday {
   month?: number
   name: string
   
+  /**
+   * Get the date of this public holiday for the given year
+   * @param {number} year
+   * @return {Date}
+   */
   getDateForYear(year: number): Date {
     if (this.adjustmentRule) {  
       return this.adjustmentRule.adjustForYear(year)
@@ -39,11 +48,15 @@ class PublicHoliday {
 
     return new Date(year, this.month ?? 0, this.day);
   }
-
-  // given a start and end date, return the dates of this public holiday 
-  // that will occur between those dates
-  // eg it might not occurr at all, or it might occur multiple times if those dates span
-  // multiple years
+  
+  /**
+   * Given a start and end date, return the dates of this public holiday,
+   * that will occur between those dates. eg eg it might not occurr at all,
+   * or it might occur multiple times if those dates span multiple years
+   * @param {Date} start - start date
+   * @param {Date} end - end date
+   * @return {Date[]} an array of dates of instances of this public holiday between start and end
+   */
   getDatesBetween(start: Date, end: Date): Date[] {
     const endYear = end.getFullYear();
     const dates: Date[] = [];

@@ -1,24 +1,27 @@
 type IncrementTimeReducer = (acc: any, curr: number) => any;
 
-// given start and end value in milliseconds, startMs, endMs,
-// an amount to increment: deltaMs,
-// a reducer function,
-// and an intial value: initValue
-// runs through every moment from startMs to endMs, stepping at intervals of deltaMs, and running 
-// the reducer function, feeding the result into the next run of the reducer.
+/**
+ * Runs a given reducer function repeatedly on moments of time.
+ * @param {number} startMs - start time in milliseconds
+ * @param {number} endMs - end time in milliseconds
+ * @param {number} incrementAmountMs - amount of milliseconds to increment each time
+ * @param {IncrementTimeReducer} reducer - a reducer function that will be passed the previous result of the reducer and the current moment in milliseconds
+ * @param {any} initialValue - initial value
+ * 
+ */
 const incrementTime = (
   startMs: number,
   endMs: number,
-  deltaMs: number,
+  incrementAmountMs: number,
   reducer: IncrementTimeReducer,
-  initValue: any
+  initialValue: any
 ) => {
-  let curr = startMs + deltaMs;
-  let acc = initValue;
+  let curr = startMs + incrementAmountMs;
+  let acc = initialValue;
 
   while (curr < endMs) {
     acc = reducer(acc, curr);
-    curr += deltaMs;
+    curr += incrementAmountMs;
   }
 
   return acc;
