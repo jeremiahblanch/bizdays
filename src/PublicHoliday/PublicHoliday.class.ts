@@ -61,7 +61,11 @@ class PublicHoliday {
     const endYear = end.getFullYear();
     const dates: Date[] = [];
 
-    for (let year = start.getFullYear() - 1; year++ <= endYear;) { // faster for loop with increment within the conditional
+    for (
+      // faster for loop with increment within the conditional
+      let year = start.getFullYear() - 1; // set year to be one less than start because year++ will run before the first pass
+      year++ <= endYear;
+    ) { 
       const dateForThisYear = this.getDateForYear(year);
 
       if (dateForThisYear > start && dateForThisYear < end) {
