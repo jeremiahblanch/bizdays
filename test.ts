@@ -1,5 +1,4 @@
 import {describe, expect, test} from '@jest/globals';
-
 import BusinessDayCounter from './src/BusinessDayCounter/BusinessDayCounter.class';
 import publicHolidays from './src/constants/publicHolidays';
 
@@ -9,7 +8,7 @@ describe('Task One: Weekdays Between Two Dates', () => {
   const inputsAndExpectedResults = [
     {start: '7 October 2013', end: '9 October 2013', expected: 1},
     {start: '5 October 2013', end: '14 October 2013', expected: 5},
-    {start: '7 October 2013', end: '1 January 2014',  expected:61},
+    {start: '7 October 2013', end: '1 January 2014',  expected: 61},
     {start: '7 October 2013', end: '5 October 2013', expected: 0},
   ];
 
@@ -30,9 +29,7 @@ describe('Task Two: Business Days Between Two Dates', () => {
     {start: '7 October 2013', end: '1 January 2014', expected: 59},
   ];
   
-  const publicHolidayStrings = [
-    '25 December 2013', '26 December 2013', '1 January 2014',
-  ];
+  const publicHolidayStrings = ['25 December 2013', '26 December 2013', '1 January 2014'];
 
   inputsAndExpectedResults.forEach(({ start, end, expected}) => {
     test(`Given ${start} and ${end} (and public holidays of [${publicHolidayStrings.join(', ')}]) returns ${expected}`, () => {
